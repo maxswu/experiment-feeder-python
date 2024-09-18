@@ -9,6 +9,8 @@ from infra.market_info.service.twse import TwseApiMarketInfoService
 @lru_cache
 def get_twse_market_info_use_case() -> TwseMarketInfoUseCase:
     return TwseMarketInfoUseCase(
-        twse_market_info_service=TwseApiMarketInfoService(settings=app_settings.twse_api),
+        twse_market_info_service=TwseApiMarketInfoService(
+            settings=app_settings.twse_api
+        ),
         asset_info_repository=LoggerAssetInfoRepository(),
     )
