@@ -1,3 +1,4 @@
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from infra.market_info.service.config import TwseApiSettings
@@ -12,6 +13,11 @@ class AppSettings(BaseSettings):
         extra='ignore',
     )
 
+    task_interval_seconds: int = Field(
+        default=60, title='Execute tasks every X seconds'
+    )
+
+    twse_targets: list[str] = Field(..., title='Target assets')
     twse_api: TwseApiSettings = TwseApiSettings()
 
 
