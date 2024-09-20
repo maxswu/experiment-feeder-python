@@ -21,16 +21,16 @@ confluent-kafka = "^2.5.3"
 pre-commit = "^3.8.0"
 pytest = "^8.3.3"
 pytest-cov = "^5.0.0"
+pytest-asyncio = "^0.24.0"
+pytest-mock = "^3.14.0"
+polyfactory = "^2.16.2"
 
 [tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "session"
 asyncio_mode = "auto"
-
-[tool.coverage.run]
-branch = true
-source = [
-  "app",
-  "domain",
-  "infra",
+addopts = "--capture=no --cov-branch --cov=domain --cov=infra --cov=app"
+testpaths = [
+    "tests",
 ]
 
 [tool.coverage.report]

@@ -10,4 +10,8 @@ class ITwseMarketInfoService(abc.ABC):
     async def get_security_info(
         self, code: str | Collection[str]
     ) -> list[TwseSecurityInfo]:
-        pass
+        """
+        Get security info (can be multiple)
+        :param code:
+        :return:
+        """

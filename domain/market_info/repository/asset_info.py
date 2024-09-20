@@ -9,4 +9,8 @@ AssetInfoT = TypeVar('AssetInfoT', bound=AssetInfo)
 class IAssetInfoRepository(abc.ABC):
     @abc.abstractmethod
     async def save_asset_info(self, asset_info: AssetInfoT) -> None:
-        pass
+        """
+        Save to repository
+        :param asset_info:
+        :return:
+        """
