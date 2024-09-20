@@ -1,4 +1,4 @@
-ARG PYTHON_IMAGE_TAG=3.12-alpine
+ARG PYTHON_IMAGE_TAG=3.12-slim-bookworm
 
 FROM python:${PYTHON_IMAGE_TAG} AS builder
 
@@ -25,4 +25,4 @@ COPY ["./", "./"]
 
 CMD ["python", "-m", "app"]
 HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -m app --now
+    CMD python -m app --dry

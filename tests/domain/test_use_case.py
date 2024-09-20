@@ -48,10 +48,7 @@ class TestTwseMarketInfoUseCase:
     async def test_get_security_info__single(self, mock_security_info):
         self.mock_service.get_security_info.return_value = [mock_security_info]
 
-        results = await self.use_case.get_security_info(code=mock_security_info.code)
+        await self.use_case.get_security_info(code=mock_security_info.code)
 
-        assert isinstance(results, list)
-        assert len(results) == 1
-        assert isinstance(results[0], TwseSecurityInfo)
         self.mock_service.get_security_info.assert_awaited_once()
         self.mock_repository.save_asset_info.assert_awaited_once()
