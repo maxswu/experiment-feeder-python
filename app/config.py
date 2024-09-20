@@ -1,6 +1,7 @@
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from infra.config import KafkaSettings
 from infra.market_info.service.config import TwseApiSettings
 
 
@@ -19,6 +20,7 @@ class AppSettings(BaseSettings):
 
     twse_targets: list[str] = Field(..., title='Target assets')
     twse_api: TwseApiSettings = TwseApiSettings()
+    kafka: KafkaSettings = KafkaSettings()
 
 
 app_settings = AppSettings()

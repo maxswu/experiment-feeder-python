@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 from pydantic import BaseModel, Field
 import httpx
 from loguru import logger
-from typing import Collection
+from typing import Collection, override
 
 from domain.market_info.model.twse import TwseSecurityInfo
 from domain.market_info.service.twse import ITwseMarketInfoService
@@ -61,11 +61,14 @@ class TwseApiMarketInfoService(ITwseMarketInfoService):
     def __init__(self, settings: TwseApiSettings):
         self.settings = settings
 
-    def get_security_info(self, code: str | Collection[str]) -> list[TwseSecurityInfo]:
+    @override
+    async def get_security_info(
+        self, code: str | Collection[str]
+    ) -> list[TwseSecurityInfo]:
         code_str = code if isinstance(code, str) else '|'.join(code)
         logger.debug(f'Getting {code} from TWSE API')
-        with httpx.Client() as client:
-            resp = client.get(
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
                 url=f'{self.settings.api_root}{self.settings.stock_info_path}',
                 params=dict(
                     json=1,

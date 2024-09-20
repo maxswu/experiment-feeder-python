@@ -7,5 +7,7 @@ from domain.market_info.model.twse import TwseSecurityInfo
 
 class ITwseMarketInfoService(abc.ABC):
     @abstractmethod
-    def get_security_info(self, code: str | Collection[str]) -> list[TwseSecurityInfo]:
+    async def get_security_info(
+        self, code: str | Collection[str]
+    ) -> list[TwseSecurityInfo]:
         pass

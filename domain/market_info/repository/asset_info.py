@@ -8,5 +8,5 @@ AssetInfoT = TypeVar('AssetInfoT', bound=AssetInfo)
 
 class IAssetInfoRepository(abc.ABC):
     @abc.abstractmethod
-    def save_asset_info(self, asset_info: AssetInfoT) -> None:
+    async def save_asset_info(self, asset_info: AssetInfoT) -> None:
         pass
