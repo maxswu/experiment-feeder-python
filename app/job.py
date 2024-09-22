@@ -11,6 +11,11 @@ from infra.market_info.service.twse import TwseApiMarketInfoService
 
 @lru_cache
 def get_twse_market_info_use_case(dry_run: bool = False) -> TwseMarketInfoUseCase:
+    """
+    Cached TWSE market info use case
+    :param dry_run: if set to `True`, `LoggerAssetInfoRepository` will be used as repository
+    :return: `TwseMarketInfoUseCase`
+    """
     if dry_run:
         return TwseMarketInfoUseCase(
             twse_market_info_service=TwseApiMarketInfoService(

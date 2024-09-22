@@ -2,6 +2,10 @@ from pydantic import BaseModel, Field
 
 
 class KafkaSettings(BaseModel):
+    """
+    Kafka settings
+    """
+
     # Broker
     bootstrap_servers: str = Field(default=None, title='Bootstrap Servers')
 

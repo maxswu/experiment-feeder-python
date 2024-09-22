@@ -5,6 +5,10 @@ from domain.market_info.model.common import AssetInfo
 
 
 class TwseSecurityInfo(AssetInfo):
+    """
+    Asset info model class for TWSE securities only
+    """
+
     exchange: str = 'TWSE'
     full_name: str = Field(..., title='全名')
     opening_price: Decimal = Field(..., title='開盤價')

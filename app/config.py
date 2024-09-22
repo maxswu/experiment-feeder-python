@@ -6,6 +6,10 @@ from infra.market_info.service.config import TwseApiSettings
 
 
 class AppSettings(BaseSettings):
+    """
+    Application settings
+    """
+
     model_config = SettingsConfigDict(
         env_file='.env',
         env_file_encoding='utf-8',

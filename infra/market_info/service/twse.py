@@ -15,6 +15,10 @@ TWSE_TZ = ZoneInfo('Asia/Taipei')
 
 
 class StockInfoResponseEntity(BaseModel):
+    """
+    API response model for TWSE official API
+    """
+
     code: str = Field(..., title='代碼', validation_alias='c')
     name: str = Field(..., title='簡稱', validation_alias='n')
     full_name: str = Field(..., title='全名', validation_alias='nf')
@@ -29,6 +33,11 @@ class StockInfoResponseEntity(BaseModel):
     )
 
     def to_domain_model(self, query_time: float) -> TwseSecurityInfo:
+        """
+        Convert entity to domain model
+        :param query_time: in timestamp
+        :return: `TwseSecurityInfo`
+        """
         return TwseSecurityInfo(
             **self.model_dump(by_alias=False),
             updated_time=self.updated_time_ms / 1000,
@@ -37,11 +46,19 @@ class StockInfoResponseEntity(BaseModel):
 
 
 class StockInfoResponseQueryTime(BaseModel):
+    """
+    API response model for TWSE official API
+    """
+
     sys_date: str = Field(..., validation_alias='sysDate')
     sys_time: str = Field(..., validation_alias='sysTime')
 
     @property
     def query_time(self) -> float:
+        """
+        Convert query time response to timestamp
+        :return: timestamp in `float`
+        """
         return (
             datetime.strptime(f'{self.sys_date}{self.sys_time}', '%Y%m%d%H:%M:%S')
             .replace(tzinfo=TWSE_TZ)
@@ -50,6 +67,10 @@ class StockInfoResponseQueryTime(BaseModel):
 
 
 class StockInfoResponse(BaseModel):
+    """
+    API response model for TWSE official API
+    """
+
     msg_array: list[StockInfoResponseEntity] = Field(..., validation_alias='msgArray')
     query_time: StockInfoResponseQueryTime = Field(..., validation_alias='queryTime')
 
@@ -58,6 +79,10 @@ class StockInfoResponse(BaseModel):
 
 
 class TwseApiMarketInfoService(ITwseMarketInfoService):
+    """
+    TWSE market info service backed by official API
+    """
+
     def __init__(self, settings: TwseApiSettings):
         self.settings = settings
 

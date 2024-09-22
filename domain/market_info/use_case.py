@@ -7,6 +7,10 @@ from domain.market_info.service.twse import ITwseMarketInfoService
 
 
 class TwseMarketInfoUseCase:
+    """
+    Domain use cases for getting TWSE market info
+    """
+
     def __init__(
         self,
         twse_market_info_service: ITwseMarketInfoService,
