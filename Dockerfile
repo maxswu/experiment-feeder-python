@@ -24,5 +24,5 @@ ENV PATH=/app/.venv/bin:$PATH
 COPY ["./", "./"]
 
 CMD ["python", "-m", "app"]
-HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -m app --dry
+#HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=3 \
+#    CMD python -m app --dry | exit 1

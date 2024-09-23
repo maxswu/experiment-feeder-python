@@ -22,22 +22,33 @@ class StockInfoResponseEntity(BaseModel):
     code: str = Field(..., title='代碼', validation_alias='c')
     name: str = Field(..., title='簡稱', validation_alias='n')
     full_name: str = Field(..., title='全名', validation_alias='nf')
-    opening_price: Decimal = Field(..., title='開盤價', validation_alias='o')
-    current_intraday_price: Decimal = Field(
+    opening_price: Decimal | str = Field(..., title='開盤價', validation_alias='o')
+    current_intraday_price: Decimal | str = Field(
         ..., title='當前盤中成交價', validation_alias='z'
     )
-    highest_price: Decimal = Field(..., title='最高價', validation_alias='h')
-    lowest_price: Decimal = Field(..., title='最低價', validation_alias='l')
+    highest_price: Decimal | str = Field(..., title='最高價', validation_alias='h')
+    lowest_price: Decimal | str = Field(..., title='最低價', validation_alias='l')
     updated_time_ms: int = Field(
         ..., title='資料更新時間(毫秒)', validation_alias='tlong'
     )
 
-    def to_domain_model(self, query_time: float) -> TwseSecurityInfo:
+    def to_domain_model(self, query_time: float) -> TwseSecurityInfo | None:
         """
         Convert entity to domain model
         :param query_time: in timestamp
         :return: `TwseSecurityInfo`
         """
+
+        # Price values maybe '-' due to source API
+        if (
+            self.opening_price == '-'
+            or self.current_intraday_price == '-'
+            or self.highest_price == '-'
+            or self.lowest_price == '-'
+        ):
+            logger.debug(f'No available prices for {self.code}')
+            return None
+
         return TwseSecurityInfo(
             **self.model_dump(by_alias=False),
             updated_time=self.updated_time_ms / 1000,
@@ -75,7 +86,12 @@ class StockInfoResponse(BaseModel):
     query_time: StockInfoResponseQueryTime = Field(..., validation_alias='queryTime')
 
     def to_domain_models(self) -> list[TwseSecurityInfo]:
-        return [e.to_domain_model(self.query_time.query_time) for e in self.msg_array]
+        results = []
+        for e in self.msg_array:
+            m = e.to_domain_model(self.query_time.query_time)
+            if m is not None:
+                results.append(m)
+        return results
 
 
 class TwseApiMarketInfoService(ITwseMarketInfoService):
